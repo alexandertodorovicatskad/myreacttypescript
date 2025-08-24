@@ -1,9 +1,14 @@
 import { useState } from 'react';
 
-export function Alert({ type = 'information', heading, children, closable=true}) {
-  const [visible, setVisible] = useState(false);
+export function Alert({ type = 'information', heading, children, closable=true, onClose }) {
+  const [visible, setVisible] = useState(true);
 
   if (!visible) return null;
+
+  function handleCloseClick() {
+    setVisible(false);
+    if (onClose) onClose();
+  }
 
   return (
     <div>
@@ -14,11 +19,11 @@ export function Alert({ type = 'information', heading, children, closable=true})
         <span>{heading}</span>
       </div>
       {closable && (
-      <button aria-label="Close">
-        <span role="img" aria-label="Close">
-          ❌
-        </span>
-      </button>
+        <button aria-label="Close" onClick={handleCloseClick}>
+          <span role="img" aria-label="Close">
+            ❌
+          </span>
+        </button>
       )}
       <div>{children}</div>
     </div>
